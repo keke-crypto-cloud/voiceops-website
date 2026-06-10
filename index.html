@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VoiceOps — Réceptionniste IA pour Hôtels</title>
+<meta name="description" content="VoiceOps répond à chaque appel de votre hôtel, vérifie les disponibilités et crée les réservations — 24h/24, en français. Opérationnel en 48h.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23050B15'/%3E%3Cpath d='M9 13v6M13 10v12M17 8v16M21 11v10M25 14v4' stroke='%232D7EFF' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
@@ -14,7 +16,7 @@
   --sky:#5BA3E8;--aqua:#7ECFED;--muted:rgba(255,255,255,0.45);
   --border:rgba(255,255,255,0.07);
 }
-html{overflow-x:hidden}
+html{overflow-x:hidden;scroll-behavior:smooth}
 body{font-family:'Syne',sans-serif;background:var(--navy);color:#fff;overflow-x:hidden;cursor:none}
 
 #cur{position:fixed;width:9px;height:9px;background:var(--electric);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen}
@@ -178,8 +180,76 @@ footer{padding:44px 64px;border-top:1px solid var(--border);display:flex;justify
 .footer-logo{font-family:'Cormorant Garamond',serif;font-size:20px;color:#fff}
 footer p{font-size:12px;color:rgba(255,255,255,.2);letter-spacing:.04em}
 
+/* ═══ ROI CALCULATOR ═══ */
+#roi{padding:160px 64px;position:relative;overflow:hidden}
+#roi::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 80% 50%,rgba(27,95,217,.08) 0%,transparent 70%);pointer-events:none}
+.roi-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:90px;align-items:center;max-width:1200px;margin:0 auto}
+.roi-grid h2{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,5vw,68px);font-weight:300;line-height:1.05;letter-spacing:-.02em;margin-bottom:22px}
+.roi-grid h2 em{font-style:italic;color:var(--sky)}
+.roi-intro p{color:var(--muted);font-size:16px;line-height:1.85}
+.roi-card{background:rgba(8,18,38,.7);border:1px solid rgba(45,126,255,.18);border-radius:18px;padding:44px 40px;backdrop-filter:blur(14px);position:relative;overflow:hidden}
+.roi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--electric),transparent)}
+.roi-row{margin-bottom:34px}
+.roi-lab{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:rgba(255,255,255,.7);margin-bottom:14px}
+.roi-lab b{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--aqua)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;border-radius:2px;background:linear-gradient(90deg,var(--electric) var(--fill,50%),rgba(255,255,255,.12) var(--fill,50%));outline:none;cursor:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--electric);box-shadow:0 0 0 6px rgba(45,126,255,.15);transition:box-shadow .3s;cursor:none}
+input[type=range]::-webkit-slider-thumb:hover{box-shadow:0 0 0 11px rgba(45,126,255,.22)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--electric)}
+.roi-out{border-top:1px solid var(--border);padding-top:30px;text-align:center}
+.roi-out-l{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.roi-out-v{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,4.5vw,62px);font-weight:300;line-height:1;background:linear-gradient(135deg,#fff,var(--aqua));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.roi-out-s{font-size:12px;color:var(--muted);margin-top:10px}
+
+/* ═══ GUARANTEE ═══ */
+#garantie{padding:0 64px 160px;max-width:1200px;margin:0 auto}
+.g-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.g-box{border:1px solid rgba(45,126,255,.18);border-radius:16px;padding:40px 36px;background:rgba(8,18,38,.5);transition:transform .4s,border-color .4s}
+.g-box:hover{transform:translateY(-6px);border-color:rgba(45,126,255,.45)}
+.g-i{font-size:26px;margin-bottom:18px}
+.g-box h3{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:400;margin-bottom:12px}
+.g-box p{color:var(--muted);font-size:13.5px;line-height:1.8}
+
+/* ═══ FAQ ═══ */
+#faq{padding:0 64px 160px;max-width:900px;margin:0 auto}
+.faq-h{text-align:center;margin-bottom:64px}
+.faq-h h2{font-family:'Cormorant Garamond',serif;font-size:clamp(40px,5vw,62px);font-weight:300;letter-spacing:-.02em}
+.faq-it{border-bottom:1px solid var(--border)}
+.faq-q{width:100%;background:none;border:none;color:#fff;font-family:'Syne',sans-serif;font-size:16px;font-weight:500;text-align:left;padding:26px 8px;display:flex;justify-content:space-between;align-items:center;gap:20px;cursor:none}
+.faq-x{width:14px;height:14px;position:relative;flex-shrink:0;transition:transform .4s cubic-bezier(.76,0,.24,1)}
+.faq-x::before,.faq-x::after{content:'';position:absolute;background:var(--sky)}
+.faq-x::before{top:50%;left:0;width:100%;height:1.5px;transform:translateY(-50%)}
+.faq-x::after{left:50%;top:0;height:100%;width:1.5px;transform:translateX(-50%)}
+.faq-it.open .faq-x{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.76,0,.24,1)}
+.faq-a p{color:var(--muted);font-size:14px;line-height:1.9;padding:0 8px 28px;max-width:680px}
+
+/* ═══ CALENDLY EMBED ═══ */
+.cal-wrap{position:relative;z-index:1;max-width:1000px;margin:64px auto 0;border:1px solid rgba(45,126,255,.2);border-radius:18px;overflow:hidden;background:rgba(8,18,38,.6);backdrop-filter:blur(10px)}
+.cal-fallback{position:relative;z-index:1;margin-top:28px}
+
+/* ═══ SCROLL SPINE ═══ */
+#spine{position:fixed;top:0;left:36px;bottom:0;width:1px;background:rgba(255,255,255,.06);z-index:400;pointer-events:none}
+#spine-fill{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to bottom,var(--electric),var(--aqua));transform-origin:top;transform:scaleY(0);box-shadow:0 0 10px rgba(45,126,255,.5)}
+#spine-dot{position:absolute;left:50%;top:0;width:9px;height:9px;border-radius:50%;background:#fff;border:2px solid var(--electric);box-shadow:0 0 12px rgba(45,126,255,.85),0 0 30px rgba(45,126,255,.4);transform:translate(-50%,-50%)}
+#spine-dot::after{content:'';position:absolute;inset:-7px;border:1px solid rgba(45,126,255,.35);border-radius:50%;animation:spinePulse 2s ease-out infinite}
+@keyframes spinePulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.5);opacity:0}}
+
+/* ═══ STICKY CTA ═══ */
+#sticky-cta{position:fixed;bottom:24px;left:50%;transform:translate(-50%,160%);z-index:600;display:flex;align-items:center;gap:18px;background:rgba(8,18,38,.92);border:1px solid rgba(45,126,255,.3);border-radius:60px;padding:10px 12px 10px 26px;backdrop-filter:blur(18px);box-shadow:0 18px 60px rgba(0,0,0,.55);transition:transform .6s cubic-bezier(.16,1,.3,1)}
+#sticky-cta.show{transform:translate(-50%,0)}
+#sticky-cta .stx{font-size:13px;color:rgba(255,255,255,.8);white-space:nowrap}
+#sticky-cta .stx b{color:var(--aqua);font-weight:600}
+#sticky-cta a{background:var(--electric);color:#fff;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:12px 24px;border-radius:40px;white-space:nowrap;transition:background .3s}
+#sticky-cta a:hover{background:var(--sky)}
+
 .rev{opacity:0;transform:translateY(56px)}
 
+@media(hover:none),(max-width:900px){
+  #cur,#ring{display:none}
+  body{cursor:auto}
+  .faq-q,.hc,input[type=range]{cursor:pointer}
+}
 @media(max-width:900px){
   nav{padding:18px 24px}
   #hero{padding:100px 24px 60px}
@@ -197,6 +267,15 @@ footer p{font-size:12px;color:rgba(255,255,255,.2);letter-spacing:.04em}
   #cta{padding:120px 24px}
   footer{padding:32px 24px}
   .fc1,.fc2,.fc3{display:none}
+  #roi{padding:80px 24px}
+  .roi-grid{grid-template-columns:1fr;gap:44px}
+  .roi-card{padding:32px 24px}
+  #garantie{padding:0 24px 80px}
+  .g-grid{grid-template-columns:1fr}
+  #faq{padding:0 24px 80px}
+  #sticky-cta .stx{display:none}
+  #sticky-cta{padding:8px;gap:0}
+  #spine{display:none}
 }
 </style>
 </head>
@@ -211,7 +290,7 @@ footer p{font-size:12px;color:rgba(255,255,255,.2);letter-spacing:.04em}
   <div class="nav-links">
     <a href="#features" class="nav-a">Fonctionnalités</a>
     <a href="#hotels" class="nav-a">Pour qui ?</a>
-    <a href="https://calendly.com/danieldevie80/30min" target="_blank" class="nav-btn"><span>Réserver une démo</span></a>
+    <a href="#cta" class="nav-btn"><span>Réserver une démo</span></a>
   </div>
 </nav>
 
@@ -225,7 +304,7 @@ footer p{font-size:12px;color:rgba(255,255,255,.2);letter-spacing:.04em}
     <h1 class="h1">Votre hôtel,<br><em>toujours là</em></h1>
     <p class="hero-p">Un agent vocal IA qui répond, vérifie les disponibilités et crée les réservations — 24h/24, en français.</p>
     <div class="hero-btns">
-      <a href="https://calendly.com/danieldevie80/30min" target="_blank" class="btn-fill">
+      <a href="#cta" class="btn-fill">
         <span>Voir une démo live</span>
         <svg class="arr" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
       </a>
@@ -441,6 +520,71 @@ footer p{font-size:12px;color:rgba(255,255,255,.2);letter-spacing:.04em}
   </div>
 </section>
 
+<section id="roi">
+  <div class="roi-grid">
+    <div class="roi-intro rev">
+      <div class="stag">Calculez votre manque à gagner</div>
+      <h2>Combien vous coûte<br><em>un appel manqué ?</em></h2>
+      <p>Chaque appel sans réponse est une réservation qui part chez le concurrent. Déplacez les curseurs et voyez ce que votre hôtel perd chaque mois — et ce que VoiceOps récupère.</p>
+    </div>
+    <div class="roi-card rev">
+      <div class="roi-row">
+        <div class="roi-lab"><span>Appels manqués par jour</span><b id="rv1">6</b></div>
+        <input type="range" id="r1" min="1" max="30" value="6" aria-label="Appels manqués par jour">
+      </div>
+      <div class="roi-row">
+        <div class="roi-lab"><span>Valeur moyenne d'une réservation</span><b id="rv2">CHF 220</b></div>
+        <input type="range" id="r2" min="80" max="800" step="10" value="220" aria-label="Valeur moyenne d'une réservation">
+      </div>
+      <div class="roi-out">
+        <div class="roi-out-l">Revenu perdu chaque mois</div>
+        <div class="roi-out-v" id="roiV">CHF 11 880</div>
+        <div class="roi-out-s">sur la base de 30 % d'appels convertis en réservation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="garantie">
+  <div class="ht-h rev">
+    <div class="stag" style="justify-content:center">Zéro risque</div>
+    <h2>Vous ne risquez<br>rien à essayer</h2>
+    <p>On enlève toutes les barrières. Si VoiceOps ne vous fait pas gagner de réservations, vous ne payez rien.</p>
+  </div>
+  <div class="g-grid">
+    <div class="g-box rev"><div class="g-i">🛡️</div><h3>Pilote de 30 jours</h3><p>Testez VoiceOps en conditions réelles sur votre ligne. Vous mesurez les réservations gagnées avant de vous décider.</p></div>
+    <div class="g-box rev"><div class="g-i">✂️</div><h3>Sans engagement</h3><p>Résiliable à tout moment, sans préavis ni frais cachés. Vous restez maître de votre réception.</p></div>
+    <div class="g-box rev"><div class="g-i">⚙️</div><h3>Installation incluse</h3><p>Configuration complète avec vos chambres, vos tarifs et vos données réelles — opérationnel en 48h.</p></div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="faq-h rev">
+    <div class="stag" style="justify-content:center">Questions fréquentes</div>
+    <h2>Vous hésitez encore ?</h2>
+  </div>
+  <div class="faq-it rev">
+    <button class="faq-q">Est-ce que ça remplace mon équipe de réception ?<span class="faq-x"></span></button>
+    <div class="faq-a"><p>Non — ça la renforce. L'agent prend les appels que votre équipe ne peut pas prendre : la nuit, pendant les check-ins, en pleine saison. Votre personnel se concentre sur les clients présents, VoiceOps capte ceux au téléphone.</p></div>
+  </div>
+  <div class="faq-it rev">
+    <button class="faq-q">Et si le client veut parler à un humain ?<span class="faq-x"></span></button>
+    <div class="faq-a"><p>L'agent transfère l'appel vers votre réception sur simple demande. Il gère les réservations courantes et laisse les cas particuliers à votre équipe.</p></div>
+  </div>
+  <div class="faq-it rev">
+    <button class="faq-q">L'agent comprend-il vraiment le français ?<span class="faq-x"></span></button>
+    <div class="faq-a"><p>Oui, il est conçu d'abord pour le français — accents et tournures régionales compris. Si le client parle anglais, il bascule automatiquement, sans interruption.</p></div>
+  </div>
+  <div class="faq-it rev">
+    <button class="faq-q">C'est compatible avec mon système de réservation ?<span class="faq-x"></span></button>
+    <div class="faq-a"><p>L'intégration est faite sur mesure : on se connecte à votre PMS ou à votre base de données existante. Rien ne change dans votre organisation, les réservations apparaissent là où vous avez l'habitude de les voir.</p></div>
+  </div>
+  <div class="faq-it rev">
+    <button class="faq-q">Combien ça coûte ?<span class="faq-x"></span></button>
+    <div class="faq-a"><p>Moins qu'un seul appel manqué par jour. Le tarif exact dépend de votre volume d'appels — on vous le présente en toute transparence pendant la démo de 30 minutes, avec le calcul de rentabilité pour votre hôtel.</p></div>
+  </div>
+</section>
+
 <section id="cta">
   <div class="cta-bg-img" id="ctaBg"></div>
   <div class="cta-ov"></div>
@@ -448,13 +592,20 @@ footer p{font-size:12px;color:rgba(255,255,255,.2);letter-spacing:.04em}
   <div class="cta-in rev">
     <div class="stag" style="justify-content:center">Commencer</div>
     <h2>Prêt à transformer<br><em>votre réception ?</em></h2>
-    <p>Démo gratuite de 30 minutes. On configure votre agent en live avec vos données réelles.</p>
-    <a href="https://calendly.com/danieldevie80/30min" target="_blank" class="btn-fill" style="display:inline-flex;font-size:13px;padding:20px 56px">
-      <span>Réserver ma démo gratuite</span>
-      <svg class="arr" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </a>
+    <p>Démo gratuite de 30 minutes. On configure votre agent en live avec vos données réelles. Choisissez votre créneau directement ci-dessous.</p>
+  </div>
+  <div class="calendly-inline-widget cal-wrap rev" data-url="https://calendly.com/danieldevie80/30min?hide_gdpr_banner=1&background_color=0a1426&text_color=ffffff&primary_color=2d7eff" style="min-width:320px;height:700px"></div>
+  <div class="cal-fallback rev">
+    <a href="https://calendly.com/danieldevie80/30min" target="_blank" class="btn-ghost">Ou ouvrir Calendly dans un nouvel onglet →</a>
   </div>
 </section>
+
+<div id="spine"><div id="spine-fill"></div><div id="spine-dot"></div></div>
+
+<div id="sticky-cta">
+  <span class="stx">Démo gratuite de 30 min — <b>en direct avec vos données</b></span>
+  <a href="#cta">Réserver</a>
+</div>
 
 <footer>
   <span class="footer-logo">VoiceOps</span>
@@ -541,6 +692,50 @@ gsap.utils.toArray('.hc').forEach((c,i)=>{
     scrollTrigger:{trigger:'#hotels',start:'top 80%',toggleActions:'play none none none'}});
 });
 
+// ── ROI CALCULATOR ──
+const r1=document.getElementById('r1'),r2=document.getElementById('r2');
+const rv1=document.getElementById('rv1'),rv2=document.getElementById('rv2'),roiV=document.getElementById('roiV');
+let roiCur=11880;
+function fillRange(el){const p=(el.value-el.min)/(el.max-el.min)*100;el.style.setProperty('--fill',p+'%');}
+function calcROI(){
+  const lost=r1.value*30*0.3*r2.value;
+  rv1.textContent=r1.value;
+  rv2.textContent='CHF '+Number(r2.value).toLocaleString('fr-CH');
+  gsap.to({v:roiCur},{v:lost,duration:.5,ease:'power2.out',onUpdate:function(){roiCur=this.targets()[0].v;roiV.textContent='CHF '+Math.round(roiCur).toLocaleString('fr-CH');}});
+  fillRange(r1);fillRange(r2);
+}
+r1.addEventListener('input',calcROI);r2.addEventListener('input',calcROI);
+fillRange(r1);fillRange(r2);
+
+// ── FAQ ACCORDION ──
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const it=q.parentElement,a=it.querySelector('.faq-a'),wasOpen=it.classList.contains('open');
+    document.querySelectorAll('.faq-it.open').forEach(o=>{o.classList.remove('open');o.querySelector('.faq-a').style.maxHeight=null;});
+    if(!wasOpen){it.classList.add('open');a.style.maxHeight=a.scrollHeight+'px';}
+  });
+});
+
+// ── SCROLL SPINE ──
+const spineFill=document.getElementById('spine-fill'),spineDot=document.getElementById('spine-dot');
+let spTarget=0,spCur=0;
+function spUpdate(){spTarget=window.scrollY/Math.max(document.body.scrollHeight-window.innerHeight,1);}
+window.addEventListener('scroll',spUpdate,{passive:true});
+window.addEventListener('resize',spUpdate,{passive:true});
+(function spAnim(){
+  spCur+=(spTarget-spCur)*.07;
+  spineFill.style.transform=`scaleY(${spCur})`;
+  spineDot.style.top=(spCur*100)+'%';
+  requestAnimationFrame(spAnim);
+})();
+
+// ── STICKY CTA ──
+const stickyBar=document.getElementById('sticky-cta'),ctaSec=document.getElementById('cta');
+window.addEventListener('scroll',()=>{
+  const ctaTop=ctaSec.getBoundingClientRect().top;
+  stickyBar.classList.toggle('show',window.scrollY>window.innerHeight*1.2&&ctaTop>window.innerHeight*.75);
+},{passive:true});
+
 // ── MAGNETIC BUTTONS ──
 document.querySelectorAll('.btn-fill,.nav-btn').forEach(btn=>{
   btn.addEventListener('mousemove',e=>{const r=btn.getBoundingClientRect();const x=(e.clientX-r.left-r.width/2)*.22;const y=(e.clientY-r.top-r.height/2)*.22;btn.style.transform=`translate(${x}px,${y}px)`;});
@@ -548,5 +743,6 @@ document.querySelectorAll('.btn-fill,.nav-btn').forEach(btn=>{
   btn.addEventListener('mouseenter',()=>{btn.style.transition='transform .1s';});
 });
 </script>
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 </body>
 </html>
